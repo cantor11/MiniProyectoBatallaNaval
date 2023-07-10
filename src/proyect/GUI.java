@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 /**
  * Clase principal
@@ -49,6 +50,8 @@ public class GUI extends JFrame {
     private EscuchaPosiciones escuchaPosiciones;
     private int orientacion = 1;
     private int sentidoOrientacion = 3;
+    private int barcoVinculadoCount = 0;
+    private String barcosList[] = new String[]{"portavion", "submarino", "submarino" , "destructor", "destructor", "fragata", "fragata", "fragata", "fragata"};
 
     /**
      * Constructor of GUI class
@@ -256,10 +259,17 @@ public class GUI extends JFrame {
                 }
             }else if (e.getButton() == MouseEvent.BUTTON1)
             {
-                for (int row = 1; row < 11; row++) {
-                    for (int col = 1; col < 11; col++) {
-                        if(e.getSource() == panelTablero.getTablero("posicion").getMatriz()[row][col]) {
-                            pintarFlota.posicionarBarco("portavion", col, row, orientacion);
+                if (barcoVinculadoCount <= barcosList.length){
+                    for (int row = 1; row < 11; row++) {
+                        for (int col = 1; col < 11; col++) {
+                            if(e.getSource() == panelTablero.getTablero("posicion").getMatriz()[row][col]) {
+                                pintarFlota.posicionarBarco(barcosList[barcoVinculadoCount], col, row, orientacion);
+                                barcoVinculadoCount++;
+                                if (barcoVinculadoCount > barcosList.length)
+                                {
+                                    comienzaLaGuerra();
+                                }
+                            }
                         }
                     }
                 }
@@ -277,7 +287,7 @@ public class GUI extends JFrame {
                 for (int col = 1; col < 11; col++) {
                     pintarFlota.removerIcon(col, row);
                     if(e.getSource() == panelTablero.getTablero("posicion").getMatriz()[row][col]) {
-                        if(pintarFlota.funcionesFlota("portavion", orientacion, sentidoOrientacion, col, row)) {
+                        if(pintarFlota.funcionesFlota(barcosList[barcoVinculadoCount], orientacion, sentidoOrientacion, col, row)) {
                             break;
                         }
                     }
@@ -290,6 +300,15 @@ public class GUI extends JFrame {
         @Override
         public void mouseExited(MouseEvent e) {
 
+        }
+
+        public void comienzaLaGuerra() {
+            headerProject.setText("¡Hora del ataque¡ ");
+            for (int row = 0; row < panelTablero.getTablero("posicion").getMatriz().length; row++) {
+                for (int col = 0; col < panelTablero.getTablero("posicion").getMatriz()[row].length; col++) {
+                    panelTablero.getTablero("posicion").getMatriz()[row][col].removeMouseListener(escuchaPosiciones);
+                }
+            }
         }
 
     }
