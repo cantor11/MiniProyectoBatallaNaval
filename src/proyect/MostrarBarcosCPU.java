@@ -5,25 +5,25 @@ import java.util.ArrayList;
 
 /**
  * Clase PintarFlotaOponente
- * @autor Mayra Alejandra Sanchez - mayra.alejandra.sanchez@correounivalle.edu.co - 202040506
- * @autor Brayan Stiven Sanchez - brayan.sanchez.leon@correounivalle.edu.co - 202043554
- * @version 1.0.0 fecha 19/3/2022
+ * @version v.1.0.0 date:28/05/2023
+ * @autor Kevin Jordan Alzate kevin.jordan@correounivalle.edu.co
+ * @autor Junior Cantor Arevalo junior.cantor@correounivalle.edu.co
+ * @author Johan Castro edier.castro@correounivalle.edu.co
  */
-public class PintarFlotaOponente {
-    private PanelTableroOponente panelTableroOponente;
-    private int cantidadPortavion; // Cantidad total de portaviones
-    private int cantidadSubmarino; // Cantidad total de submarinos
-    private int cantidadDestructor; // Cantidad total de destructores
-    private int cantidadFragata; // Cantidad total de fragatas
-    private int barcoUsado; // Acumulador para identificar cuál nave ha sido desplegada (en orden del 1 al 10)
-    private ArrayList<Integer> casillasUsadasBarco; // casillas usadas por cada nave
+public class MostrarBarcosCPU {
+    private PanelCPUTablero panelCPUTablero;
+    private int cantidadPortavion;
+    private int cantidadSubmarino;
+    private int cantidadDestructor;
+    private int cantidadFragata;
+    private int barcoUsado;
+    private ArrayList<Integer> casillasUsadasBarco;
 
     /**
      * Constructor de la clase PintarFlotaOponente
-     * @param _panelTableroOponente
      */
-    public PintarFlotaOponente(PanelTableroOponente _panelTableroOponente){
-        this.panelTableroOponente = _panelTableroOponente;
+    public MostrarBarcosCPU(PanelCPUTablero _panelCPUTablero){
+        this.panelCPUTablero = _panelCPUTablero;
         cantidadPortavion = 1;
         cantidadSubmarino = 2;
         cantidadDestructor = 3;
@@ -34,10 +34,6 @@ public class PintarFlotaOponente {
 
     /**
      * Retorna la dirección de la imagen dependiendo del barco ingresado
-     * @param barco
-     * @param estadoOrientacion
-     * @param estadoSentidoOrientacion
-     * @return String
      */
     public String pathImages(String barco, int estadoOrientacion, int estadoSentidoOrientacion){
         String path = "";
@@ -65,26 +61,23 @@ public class PintarFlotaOponente {
 
     /**
      * Relaciona la casilla y la cantidad de casillas que usa el barco ingresado
-     * @param casilla
-     * @param barco
-     * @param numeroBarco
      */
     public void relacionJLabelBarco(JLabel casilla, String barco, int numeroBarco){
         if(barco.equals("portavion" + String.valueOf(numeroBarco))){
             casillasUsadasBarco.add(4);
-            panelTableroOponente.getTableroOponente("posicion").getCasillaBarco().put(casilla, casillasUsadasBarco.get(casillasUsadasBarco.size()-1));
+            panelCPUTablero.getTableroOponente("posicion").getCasillaBarco().put(casilla, casillasUsadasBarco.get(casillasUsadasBarco.size()-1));
         }else{
             if(barco.equals("submarino" + String.valueOf(numeroBarco))){
                 casillasUsadasBarco.add(3);
-                panelTableroOponente.getTableroOponente("posicion").getCasillaBarco().put(casilla, casillasUsadasBarco.get(casillasUsadasBarco.size()-1));
+                panelCPUTablero.getTableroOponente("posicion").getCasillaBarco().put(casilla, casillasUsadasBarco.get(casillasUsadasBarco.size()-1));
             }else{
                 if(barco.equals("destructor" + String.valueOf(numeroBarco))){
                     casillasUsadasBarco.add(2);
-                    panelTableroOponente.getTableroOponente("posicion").getCasillaBarco().put(casilla, casillasUsadasBarco.get(casillasUsadasBarco.size()-1));
+                    panelCPUTablero.getTableroOponente("posicion").getCasillaBarco().put(casilla, casillasUsadasBarco.get(casillasUsadasBarco.size()-1));
                 }else{
                     if(barco.equals("fragata" + String.valueOf(numeroBarco))){
                         casillasUsadasBarco.add(1);
-                        panelTableroOponente.getTableroOponente("posicion").getCasillaBarco().put(casilla, casillasUsadasBarco.get(casillasUsadasBarco.size()-1));
+                        panelCPUTablero.getTableroOponente("posicion").getCasillaBarco().put(casilla, casillasUsadasBarco.get(casillasUsadasBarco.size()-1));
                     }
                 }
             }
@@ -93,12 +86,6 @@ public class PintarFlotaOponente {
 
     /**
      * Pinta el barco en las respectivas casillas del tablero posición
-     * @param barco
-     * @param estadoOrientacion
-     * @param estadoSentidoOrientacion
-     * @param col
-     * @param row
-     * @return boolean
      */
     public boolean funcionesFlota(String barco, int estadoOrientacion, int estadoSentidoOrientacion, int col, int row){
         int casillasAUsar; // Cantidad de casillas que ocupa el barco
@@ -140,7 +127,7 @@ public class PintarFlotaOponente {
                     nextImage = 1;
                     // Determina si las casillas siguientes estan ocupadas ocupadas por otra nave o no
                     for(int casilla=col; casilla < col+casillasAUsar; casilla++){
-                        if(panelTableroOponente.getTableroOponente("posicion").getCasillasOcupadas().get(panelTableroOponente.getTableroOponente("posicion").getMatriz()[row][casilla]) == Integer.valueOf(1)) {
+                        if(panelCPUTablero.getTableroOponente("posicion").getCasillasOcupadas().get(panelCPUTablero.getTableroOponente("posicion").getMatriz()[row][casilla]) == Integer.valueOf(1)) {
                             casillasUsadas++;
                         }
                     }
@@ -148,10 +135,10 @@ public class PintarFlotaOponente {
                     // Si las casillas siguientes no estan ocupadas, se despliega el barco
                     if(casillasUsadas == 0){
                         for(int pic=col; pic < col+casillasAUsar; pic++){
-                            panelTableroOponente.getTableroOponente("posicion").getMatriz()[row][pic].setIcon(new ImageIcon(getClass().getResource(pathImages(barco, estadoOrientacion, estadoSentidoOrientacion) + String.valueOf(nextImage) + ".png")));
-                            panelTableroOponente.getTableroOponente("posicion").getCasillasOcupadas().put(panelTableroOponente.getTableroOponente("posicion").getMatriz()[row][pic], 1);
-                            panelTableroOponente.getTableroOponente("posicion").getCasillaNombreBarco().put(panelTableroOponente.getTableroOponente("posicion").getMatriz()[row][pic], barco + String.valueOf(barcoUsado));
-                            relacionJLabelBarco(panelTableroOponente.getTableroOponente("posicion").getMatriz()[row][pic], barco + String.valueOf(barcoUsado), barcoUsado);
+                            panelCPUTablero.getTableroOponente("posicion").getMatriz()[row][pic].setIcon(new ImageIcon(getClass().getResource(pathImages(barco, estadoOrientacion, estadoSentidoOrientacion) + String.valueOf(nextImage) + ".png")));
+                            panelCPUTablero.getTableroOponente("posicion").getCasillasOcupadas().put(panelCPUTablero.getTableroOponente("posicion").getMatriz()[row][pic], 1);
+                            panelCPUTablero.getTableroOponente("posicion").getCasillaNombreBarco().put(panelCPUTablero.getTableroOponente("posicion").getMatriz()[row][pic], barco + String.valueOf(barcoUsado));
+                            relacionJLabelBarco(panelCPUTablero.getTableroOponente("posicion").getMatriz()[row][pic], barco + String.valueOf(barcoUsado), barcoUsado);
                             nextImage++;
                             auxiliar = true;
                         }
@@ -162,17 +149,17 @@ public class PintarFlotaOponente {
                 }else{
                     nextImage = casillasAUsar;
                     for(int casilla=col; casilla > col-casillasAUsar; casilla--){
-                        if(panelTableroOponente.getTableroOponente("posicion").getCasillasOcupadas().get(panelTableroOponente.getTableroOponente("posicion").getMatriz()[row][casilla]) == Integer.valueOf(1)) {
+                        if(panelCPUTablero.getTableroOponente("posicion").getCasillasOcupadas().get(panelCPUTablero.getTableroOponente("posicion").getMatriz()[row][casilla]) == Integer.valueOf(1)) {
                             casillasUsadas++;
                         }
                     }
 
                     if(casillasUsadas == 0){
                         for(int pic=col; pic > col-casillasAUsar; pic--){
-                            panelTableroOponente.getTableroOponente("posicion").getMatriz()[row][pic].setIcon(new ImageIcon(getClass().getResource(pathImages(barco, estadoOrientacion, estadoSentidoOrientacion) + String.valueOf(nextImage) + ".png")));
-                            panelTableroOponente.getTableroOponente("posicion").getCasillasOcupadas().put(panelTableroOponente.getTableroOponente("posicion").getMatriz()[row][pic], 1);
-                            panelTableroOponente.getTableroOponente("posicion").getCasillaNombreBarco().put(panelTableroOponente.getTableroOponente("posicion").getMatriz()[row][pic], barco + String.valueOf(barcoUsado));
-                            relacionJLabelBarco(panelTableroOponente.getTableroOponente("posicion").getMatriz()[row][pic], barco + String.valueOf(barcoUsado), barcoUsado);
+                            panelCPUTablero.getTableroOponente("posicion").getMatriz()[row][pic].setIcon(new ImageIcon(getClass().getResource(pathImages(barco, estadoOrientacion, estadoSentidoOrientacion) + String.valueOf(nextImage) + ".png")));
+                            panelCPUTablero.getTableroOponente("posicion").getCasillasOcupadas().put(panelCPUTablero.getTableroOponente("posicion").getMatriz()[row][pic], 1);
+                            panelCPUTablero.getTableroOponente("posicion").getCasillaNombreBarco().put(panelCPUTablero.getTableroOponente("posicion").getMatriz()[row][pic], barco + String.valueOf(barcoUsado));
+                            relacionJLabelBarco(panelCPUTablero.getTableroOponente("posicion").getMatriz()[row][pic], barco + String.valueOf(barcoUsado), barcoUsado);
                             nextImage--;
                             auxiliar = true;
                         }
@@ -198,17 +185,17 @@ public class PintarFlotaOponente {
                 if(estadoSentidoOrientacion == 1){
                     nextImage = 1;
                     for(int casilla=row; casilla < row+casillasAUsar; casilla++){
-                        if(panelTableroOponente.getTableroOponente("posicion").getCasillasOcupadas().get(panelTableroOponente.getTableroOponente("posicion").getMatriz()[casilla][col]) == Integer.valueOf(1)) {
+                        if(panelCPUTablero.getTableroOponente("posicion").getCasillasOcupadas().get(panelCPUTablero.getTableroOponente("posicion").getMatriz()[casilla][col]) == Integer.valueOf(1)) {
                             casillasUsadas++;
                         }
                     }
 
                     if(casillasUsadas == 0){
                         for(int pic=row; pic < row+casillasAUsar; pic++){
-                            panelTableroOponente.getTableroOponente("posicion").getMatriz()[pic][col].setIcon(new ImageIcon(getClass().getResource(pathImages(barco, estadoOrientacion, estadoSentidoOrientacion) + String.valueOf(nextImage) + ".png")));
-                            panelTableroOponente.getTableroOponente("posicion").getCasillasOcupadas().put(panelTableroOponente.getTableroOponente("posicion").getMatriz()[pic][col], 1);
-                            panelTableroOponente.getTableroOponente("posicion").getCasillaNombreBarco().put(panelTableroOponente.getTableroOponente("posicion").getMatriz()[pic][col], barco + String.valueOf(barcoUsado));
-                            relacionJLabelBarco(panelTableroOponente.getTableroOponente("posicion").getMatriz()[pic][col], barco + String.valueOf(barcoUsado), barcoUsado);
+                            panelCPUTablero.getTableroOponente("posicion").getMatriz()[pic][col].setIcon(new ImageIcon(getClass().getResource(pathImages(barco, estadoOrientacion, estadoSentidoOrientacion) + String.valueOf(nextImage) + ".png")));
+                            panelCPUTablero.getTableroOponente("posicion").getCasillasOcupadas().put(panelCPUTablero.getTableroOponente("posicion").getMatriz()[pic][col], 1);
+                            panelCPUTablero.getTableroOponente("posicion").getCasillaNombreBarco().put(panelCPUTablero.getTableroOponente("posicion").getMatriz()[pic][col], barco + String.valueOf(barcoUsado));
+                            relacionJLabelBarco(panelCPUTablero.getTableroOponente("posicion").getMatriz()[pic][col], barco + String.valueOf(barcoUsado), barcoUsado);
                             nextImage++;
                             auxiliar = true;
                         }
@@ -219,17 +206,17 @@ public class PintarFlotaOponente {
                 }else{
                     nextImage = casillasAUsar;
                     for(int casilla=row; casilla > row-casillasAUsar; casilla--){
-                        if(panelTableroOponente.getTableroOponente("posicion").getCasillasOcupadas().get(panelTableroOponente.getTableroOponente("posicion").getMatriz()[casilla][col]) == Integer.valueOf(1)) {
+                        if(panelCPUTablero.getTableroOponente("posicion").getCasillasOcupadas().get(panelCPUTablero.getTableroOponente("posicion").getMatriz()[casilla][col]) == Integer.valueOf(1)) {
                             casillasUsadas++;
                         }
                     }
 
                     if(casillasUsadas == 0){
                         for(int pic=row; pic > row-casillasAUsar; pic--){
-                            panelTableroOponente.getTableroOponente("posicion").getMatriz()[pic][col].setIcon(new ImageIcon(getClass().getResource(pathImages(barco, estadoOrientacion, estadoSentidoOrientacion) + String.valueOf(nextImage) + ".png")));
-                            panelTableroOponente.getTableroOponente("posicion").getCasillasOcupadas().put(panelTableroOponente.getTableroOponente("posicion").getMatriz()[pic][col], 1);
-                            panelTableroOponente.getTableroOponente("posicion").getCasillaNombreBarco().put(panelTableroOponente.getTableroOponente("posicion").getMatriz()[pic][col], barco + String.valueOf(barcoUsado));
-                            relacionJLabelBarco(panelTableroOponente.getTableroOponente("posicion").getMatriz()[pic][col], barco + String.valueOf(barcoUsado), barcoUsado);
+                            panelCPUTablero.getTableroOponente("posicion").getMatriz()[pic][col].setIcon(new ImageIcon(getClass().getResource(pathImages(barco, estadoOrientacion, estadoSentidoOrientacion) + String.valueOf(nextImage) + ".png")));
+                            panelCPUTablero.getTableroOponente("posicion").getCasillasOcupadas().put(panelCPUTablero.getTableroOponente("posicion").getMatriz()[pic][col], 1);
+                            panelCPUTablero.getTableroOponente("posicion").getCasillaNombreBarco().put(panelCPUTablero.getTableroOponente("posicion").getMatriz()[pic][col], barco + String.valueOf(barcoUsado));
+                            relacionJLabelBarco(panelCPUTablero.getTableroOponente("posicion").getMatriz()[pic][col], barco + String.valueOf(barcoUsado), barcoUsado);
                             nextImage--;
                             auxiliar = true;
                         }
@@ -245,7 +232,6 @@ public class PintarFlotaOponente {
 
     /**
      * Cambia la cantidad disponible del barco ingresado
-     * @param barco
      */
     public void setCantidadBarco(String barco){
         if(barco.equals("portavion")){
@@ -267,8 +253,6 @@ public class PintarFlotaOponente {
 
     /**
      * Retorna la cantidad disponible del barco ingresado
-     * @param barco
-     * @return int
      */
     public int getCantidadBarco(String barco){
         int cantidad = 0;
@@ -292,7 +276,6 @@ public class PintarFlotaOponente {
 
     /**
      * Retorna la cantidad total de naves disponibles
-     * @return int
      */
     public int cantidadTotalNaves(){
         return cantidadPortavion + cantidadSubmarino + cantidadDestructor + cantidadFragata;

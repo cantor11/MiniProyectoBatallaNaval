@@ -3,7 +3,6 @@ package proyect;
 import javax.swing.*;
 import java.awt.*;
 
-
 public class Header extends JLabel {
     /**
      * Constructor of the Header class

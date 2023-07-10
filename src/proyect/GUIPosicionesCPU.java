@@ -6,28 +6,25 @@ import java.util.Random;
 
 /**
  * Clase GUI_Secundaria
- * @autor Mayra Alejandra Sanchez - mayra.alejandra.sanchez@correounivalle.edu.co - 202040506
- * @autor Brayan Stiven Sanchez - brayan.sanchez.leon@correounivalle.edu.co - 202043554
- * @version 1.0.0 fecha 19/3/2022
+ * @version v.1.0.0 date:28/05/2023
+ * @autor Kevin Jordan Alzate kevin.jordan@correounivalle.edu.co
+ * @autor Junior Cantor Arevalo junior.cantor@correounivalle.edu.co
+ * @author Johan Castro edier.castro@correounivalle.edu.co
  */
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.util.Random;
 
-public class GUI_Secundaria extends JFrame {
+public class GUIPosicionesCPU extends JFrame {
     public static final String PATH = "/recursos/";
-    private PanelTableroOponente panelTableroOponente;
-    private PintarFlotaOponente pintarFlotaOponente;
-    private GUI guiPrincipal;
+    private PanelCPUTablero panelCPUTablero;
+    private MostrarBarcosCPU mostrarBarcosCPU;
+    private GUIBatallaNaval guiBatallaNavalPrincipal;
     private int contadorHundidos;
     private int estado; // 1 si continua, 2 si gana el oponente, de lo contrario 0
 
     /**
      * Constructor de la clase GUI_Secundaria
      */
-    public GUI_Secundaria(GUI _guiPrincipal) {
-        this.guiPrincipal = _guiPrincipal;
+    public GUIPosicionesCPU(GUIBatallaNaval _guiBatallaNavalPrincipal) {
+        this.guiBatallaNavalPrincipal = _guiBatallaNavalPrincipal;
         contadorHundidos = 0;
         initGUI_Secundaria();
         setupJFrame();
@@ -43,9 +40,9 @@ public class GUI_Secundaria extends JFrame {
 
         panelCentral.setLayout(new GridBagLayout());
 
-        panelTableroOponente = new PanelTableroOponente();
-        pintarFlotaOponente = new PintarFlotaOponente(panelTableroOponente);
-        panelCentral.add(panelTableroOponente);
+        panelCPUTablero = new PanelCPUTablero();
+        mostrarBarcosCPU = new MostrarBarcosCPU(panelCPUTablero);
+        panelCentral.add(panelCPUTablero);
     }
 
     private JPanel createPanel(Color color, Object layout) {
@@ -60,8 +57,6 @@ public class GUI_Secundaria extends JFrame {
      */
     private void setupJFrame() {
         setTitle("Batalla Naval");
-        Image image = new ImageIcon(getClass().getResource(PATH + "barcoIcono.png")).getImage();
-        setIconImage(image);
         setUndecorated(false);
         setSize(460, 460);
         setResizable(false);
@@ -78,7 +73,7 @@ public class GUI_Secundaria extends JFrame {
         JPanel panelContenedor = new JPanel(new GridBagLayout());
         getContentPane().add(panelContenedor);
 
-        panelContenedor.add(panelTableroOponente, gbc);
+        panelContenedor.add(panelCPUTablero, gbc);
     }
 
     /**
@@ -89,14 +84,14 @@ public class GUI_Secundaria extends JFrame {
         int row = random.nextInt(10) + 1;
         int col = random.nextInt(10) + 1;
 
-        if (panelTableroOponente.getTableroOponente("principal").getCasillasOcupadas().get(panelTableroOponente.getTableroOponente("principal").getMatriz()[row][col]) == Integer.valueOf(1)) {
+        if (panelCPUTablero.getTableroOponente("principal").getCasillasOcupadas().get(panelCPUTablero.getTableroOponente("principal").getMatriz()[row][col]) == Integer.valueOf(1)) {
             // Verificar si la casilla seleccionada contiene un barco del usuario
-            if (guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]) != Integer.valueOf(0)) {
+            if (guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").getCasillaBarco().get(guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]) != Integer.valueOf(0)) {
                 for (int num = 1; num < 11; num++) {
                     String barco = "";
                     // Obtener el nombre del barco en la casilla seleccionada
-                    if (guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]) != null) {
-                        barco = (String) guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]);
+                    if (guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]) != null) {
+                        barco = (String) guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]);
                     }
                     // Realizar acciones de combate según el barco seleccionado
                     if (barco.equals("portavion" + String.valueOf(num))) {
@@ -115,14 +110,14 @@ public class GUI_Secundaria extends JFrame {
                 }
             }
         } else {
-            if (panelTableroOponente.getTableroOponente("principal").getCasillasOcupadas().get(panelTableroOponente.getTableroOponente("principal").getMatriz()[row][col]) == Integer.valueOf(2)) {
+            if (panelCPUTablero.getTableroOponente("principal").getCasillasOcupadas().get(panelCPUTablero.getTableroOponente("principal").getMatriz()[row][col]) == Integer.valueOf(2)) {
                 // Volver a intentar si la casilla ya fue atacada anteriormente
                 oponenteVsUsuario();
             } else {
                 // Actualizar casillas y estado si la casilla contiene agua
-                panelTableroOponente.getTableroOponente("principal").getCasillasOcupadas().put(panelTableroOponente.getTableroOponente("principal").getMatriz()[row][col], Integer.valueOf(2));
-                guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col].setIcon(new ImageIcon(getClass().getResource("/recursos/agua.png")));
-                panelTableroOponente.getTableroOponente("principal").getMatriz()[row][col].setIcon(new ImageIcon(getClass().getResource("/recursos/agua.png")));
+                panelCPUTablero.getTableroOponente("principal").getCasillasOcupadas().put(panelCPUTablero.getTableroOponente("principal").getMatriz()[row][col], Integer.valueOf(2));
+                guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col].setIcon(new ImageIcon(getClass().getResource("/recursos/agua.png")));
+                panelCPUTablero.getTableroOponente("principal").getMatriz()[row][col].setIcon(new ImageIcon(getClass().getResource("/recursos/agua.png")));
                 estado = 0;
             }
         }
@@ -132,19 +127,19 @@ public class GUI_Secundaria extends JFrame {
      * Este método realiza las acciones de combate cuando se ha tocado un barco
      */
     public void funcionesCombate(int row, int col, String barco) {
-        guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col].setIcon(new ImageIcon(getClass().getResource("/recursos/tocado.png")));
-        panelTableroOponente.getTableroOponente("principal").getCasillasOcupadas().replace(panelTableroOponente.getTableroOponente("principal").getMatriz()[row][col], Integer.valueOf(2));
+        guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col].setIcon(new ImageIcon(getClass().getResource("/recursos/tocado.png")));
+        panelCPUTablero.getTableroOponente("principal").getCasillasOcupadas().replace(panelCPUTablero.getTableroOponente("principal").getMatriz()[row][col], Integer.valueOf(2));
 
-        guiPrincipal.getPanelTablero().getTablero("posicion").reducirCasillasUsadas(barco);
+        guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").reducirCasillasUsadas(barco);
 
-        if (guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]) == Integer.valueOf(0)) {
+        if (guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").getCasillaBarco().get(guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]) == Integer.valueOf(0)) {
             contadorHundidos++;
             estado = 1;
             for (int fil = 1; fil < 11; fil++) {
                 for (int colu = 1; colu < 11; colu++) {
-                    String nombreBarco = (String) guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[fil][colu]);
+                    String nombreBarco = (String) guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[fil][colu]);
                     if (nombreBarco != null && nombreBarco.equals(barco)) {
-                        guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[fil][colu].setIcon(new ImageIcon(getClass().getResource("/recursos/hundido.png")));
+                        guiBatallaNavalPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[fil][colu].setIcon(new ImageIcon(getClass().getResource("/recursos/hundido.png")));
                     }
                 }
             }
@@ -171,11 +166,11 @@ public class GUI_Secundaria extends JFrame {
         int numColumnaAleatoria = random.nextInt(10) + 1;
         int numFilaAleatoria = random.nextInt(10) + 1;
 
-        if (pintarFlotaOponente.getCantidadBarco(nombreBarco) > 0) {
-            if (!pintarFlotaOponente.funcionesFlota(nombreBarco, numOrientacionAleatoria, numSentidoAleatorio, numColumnaAleatoria, numFilaAleatoria)) {
+        if (mostrarBarcosCPU.getCantidadBarco(nombreBarco) > 0) {
+            if (!mostrarBarcosCPU.funcionesFlota(nombreBarco, numOrientacionAleatoria, numSentidoAleatorio, numColumnaAleatoria, numFilaAleatoria)) {
                 distribucionFlotaOponente();
             } else {
-                pintarFlotaOponente.setCantidadBarco(nombreBarco);
+                mostrarBarcosCPU.setCantidadBarco(nombreBarco);
             }
         }
     }
@@ -183,15 +178,15 @@ public class GUI_Secundaria extends JFrame {
     /**
      * Este método retorna el panelTableroOponente
      */
-    public PanelTableroOponente getPanelTableroOponente() {
-        return panelTableroOponente;
+    public PanelCPUTablero getPanelTableroOponente() {
+        return panelCPUTablero;
     }
 
     /**
      * Este método retorna el panelTableroOponente
      */
-    public PintarFlotaOponente getPintarFlotaOponente() {
-        return pintarFlotaOponente;
+    public MostrarBarcosCPU getPintarFlotaOponente() {
+        return mostrarBarcosCPU;
     }
 
     /**
