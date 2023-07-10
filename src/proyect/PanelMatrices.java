@@ -5,27 +5,27 @@ import java.awt.*;
 
 /**
  * Clase PanelTablero
- * @autor Mayra Alejandra Sanchez - mayra.alejandra.sanchez@correounivalle.edu.co - 202040506
- * @autor Brayan Stiven Sanchez - brayan.sanchez.leon@correounivalle.edu.co - 202043554
- * @version 1.0.0 fecha 19/3/2022
+ * @version v.1.0.0 date:28/05/2023
+ * @autor Kevin Jordan Alzate kevin.jordan@correounivalle.edu.co
+ * @autor Junior Cantor Arevalo junior.cantor@correounivalle.edu.co
+ * @author Johan Castro edier.castro@correounivalle.edu.co
  */
-public class PanelTablero extends JPanel {
-
+public class PanelMatrices extends JPanel {
     public static final String PATH ="/recursos/";
     private JLabel nombreTableroPosicion, nombreTableroPrincipal, imagenTiros;
     private BackgroundPane panelTableroPosicion, panelTableroPrincipal;
-    private Tableros tableroPosicion, tableroPrincipal;
+    private MatricesTableros tableroPosicion, tableroPrincipal;
     private String abecedario[];
 
     /**
      * Constructor de la clase PanelTablero
      */
-    public PanelTablero(){
+    public PanelMatrices(){
         GridBagLayout gb = new GridBagLayout();
         this.setLayout(gb);
         this.setBackground(Color.black);
-        tableroPosicion = new Tableros();
-        tableroPrincipal = new Tableros();
+        tableroPosicion = new MatricesTableros();
+        tableroPrincipal = new MatricesTableros();
         abecedario = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
         iniciar();
         modelTablero();
@@ -76,7 +76,7 @@ public class PanelTablero extends JPanel {
     }
 
     /**
-     * JPanel con imagen para agregar las matrices
+     * JPanel para agregar las matrices
      */
 
     public class BackgroundPane extends JPanel{
@@ -157,8 +157,8 @@ public class PanelTablero extends JPanel {
      * @param _tablero
      * @return Tableros
      */
-    public Tableros getTablero(String _tablero){
-        Tableros tablero = new Tableros();
+    public MatricesTableros getTablero(String _tablero){
+        MatricesTableros tablero = new MatricesTableros();
         if(_tablero.equals("posicion")){
             tablero = tableroPosicion;
         }else{
