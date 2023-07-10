@@ -51,7 +51,7 @@ public class GUI extends JFrame {
     private int orientacion = 1;
     private int sentidoOrientacion = 3;
     private int barcoVinculadoCount = 0;
-    private String barcosList[] = new String[]{"portavion", "submarino", "submarino" , "destructor", "destructor", "fragata", "fragata", "fragata", "fragata"};
+    private String barcosList[] = new String[]{"portavion", "submarino", "submarino" , "destructor", "destructor", "destructor", "fragata", "fragata", "fragata", "fragata"};
 
     /**
      * Constructor of GUI class
@@ -272,7 +272,7 @@ public class GUI extends JFrame {
                         }
                     }
                 }else{
-
+                    comienzaLaGuerra();
                 }
             }
         }
