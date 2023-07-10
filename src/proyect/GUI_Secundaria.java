@@ -10,6 +10,11 @@ import java.util.Random;
  * @autor Brayan Stiven Sanchez - brayan.sanchez.leon@correounivalle.edu.co - 202043554
  * @version 1.0.0 fecha 19/3/2022
  */
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.Random;
+
 public class GUI_Secundaria extends JFrame {
     public static final String PATH = "/recursos/";
     private PanelTableroOponente panelTableroOponente;
@@ -25,91 +30,96 @@ public class GUI_Secundaria extends JFrame {
         this.guiPrincipal = _guiPrincipal;
         contadorHundidos = 0;
         initGUI_Secundaria();
-
-        // Configuración del JFrame
-        this.setTitle("Batalla Naval");
-        Image image = new ImageIcon(getClass().getResource(PATH + "barcoIcono.png")).getImage();
-        this.setIconImage(image);
-        this.setUndecorated(false);
-        this.setSize(600, 600);
-        this.setResizable(true);
-        this.setVisible(false);
-        this.setLocationRelativeTo(null);
+        setupJFrame();
     }
 
     /**
-     * Este método se utiliza para configurar la configuración predeterminada de JComponent,
-     * crear objetos de escucha y control utilizados para la clase GUI
+     * Este método se utiliza para inicializar la interfaz gráfica de la ventana secundaria
      */
     private void initGUI_Secundaria() {
-        // Set up JFrame Container's Layout
-        getContentPane().setLayout(new BorderLayout(0,0));
+        getContentPane().setLayout(new BorderLayout(0, 0));
 
-        JPanel panelPrincipal = new JPanel();
-        panelPrincipal.setBackground(Color.gray);
-        getContentPane().add(panelPrincipal,BorderLayout.CENTER);
-        panelPrincipal.setLayout(new BorderLayout(0,0));
+        JPanel panelCentral = createPanel(Color.gray, BorderLayout.CENTER);
 
-        JPanel panelSup = new JPanel();
-        panelSup.setBackground(Color.gray);
-        panelPrincipal.add(panelSup,BorderLayout.NORTH);
-        panelSup.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
-
-        JPanel panelInferior = new JPanel();
-        panelInferior.setBackground(Color.gray);
-        panelPrincipal.add(panelInferior,BorderLayout.SOUTH);
-        panelInferior.setLayout(new FlowLayout(FlowLayout.CENTER,200,0));
-
-        JPanel panelCentral = new JPanel();
-        panelCentral.setBackground(Color.gray);
-        panelPrincipal.add(panelCentral,BorderLayout.CENTER);
         panelCentral.setLayout(new GridBagLayout());
+
         panelTableroOponente = new PanelTableroOponente();
         pintarFlotaOponente = new PintarFlotaOponente(panelTableroOponente);
         panelCentral.add(panelTableroOponente);
+    }
 
+    private JPanel createPanel(Color color, Object layout) {
+        JPanel panel = new JPanel();
+        panel.setBackground(color);
+        getContentPane().add(panel, layout);
+        return panel;
     }
 
     /**
-     * Selecciona aleatoriamente una casilla para atacar la flota del usuario
+     * Este método se utiliza para configurar las propiedades de la ventana JFrame
      */
-    public void oponenteVsUsuario(){
-        Random fila = new Random();
-        Random columna = new Random();
+    private void setupJFrame() {
+        setTitle("Batalla Naval");
+        Image image = new ImageIcon(getClass().getResource(PATH + "barcoIcono.png")).getImage();
+        setIconImage(image);
+        setUndecorated(false);
+        setSize(460, 460);
+        setResizable(false);
+        setVisible(false);
+        setLocationRelativeTo(null);
 
-        int row = fila.nextInt(10)+1;
-        int col = columna.nextInt(10)+1;
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
 
-        // Verifica si la casilla seleccionada hay un barco del usuario
-        if(panelTableroOponente.getTableroOponente("principal").getCasillasOcupadas().get(panelTableroOponente.getTableroOponente("principal").getMatriz()[row][col]) == Integer.valueOf(1)){
-            // Verifica si todas las casillas del barco fueron seleccionadas
-            if(guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]) != Integer.valueOf(0)){
-                for(int num=1; num < 11; num++){
-                    if(guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]).equals("portavion" + String.valueOf(num))){
-                        funcionesCombate(row, col, "portavion" + String.valueOf(num));
+        JPanel panelContenedor = new JPanel(new GridBagLayout());
+        getContentPane().add(panelContenedor);
+
+        panelContenedor.add(panelTableroOponente, gbc);
+    }
+
+    /**
+     * Este método se utiliza para configurar las propiedades de la ventana JFrame
+     */
+    public void oponenteVsUsuario() {
+        Random random = new Random();
+        int row = random.nextInt(10) + 1;
+        int col = random.nextInt(10) + 1;
+
+        if (panelTableroOponente.getTableroOponente("principal").getCasillasOcupadas().get(panelTableroOponente.getTableroOponente("principal").getMatriz()[row][col]) == Integer.valueOf(1)) {
+            // Verificar si la casilla seleccionada contiene un barco del usuario
+            if (guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]) != Integer.valueOf(0)) {
+                for (int num = 1; num < 11; num++) {
+                    String barco = "";
+                    // Obtener el nombre del barco en la casilla seleccionada
+                    if (guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]) != null) {
+                        barco = (String) guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]);
+                    }
+                    // Realizar acciones de combate según el barco seleccionado
+                    if (barco.equals("portavion" + String.valueOf(num))) {
+                        funcionesCombate(row, col, barco);
                         break;
-                    }else{
-                        if(guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]).equals("submarino" + String.valueOf(num))){
-                            funcionesCombate(row, col, "submarino" + String.valueOf(num));
-                            break;
-                        }else{
-                            if(guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]).equals("destructor" + String.valueOf(num))){
-                                funcionesCombate(row, col, "destructor" + String.valueOf(num));
-                                break;
-                            }else{
-                                if(guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]).equals("fragata" + String.valueOf(num))){
-                                    funcionesCombate(row, col, "fragata" + String.valueOf(num));
-                                    break;
-                                }
-                            }
-                        }
+                    } else if (barco.equals("submarino" + String.valueOf(num))) {
+                        funcionesCombate(row, col, barco);
+                        break;
+                    } else if (barco.equals("destructor" + String.valueOf(num))) {
+                        funcionesCombate(row, col, barco);
+                        break;
+                    } else if (barco.equals("fragata" + String.valueOf(num))) {
+                        funcionesCombate(row, col, barco);
+                        break;
                     }
                 }
             }
-        }else{
-            if(panelTableroOponente.getTableroOponente("principal").getCasillasOcupadas().get(panelTableroOponente.getTableroOponente("principal").getMatriz()[row][col]) == Integer.valueOf(2)){
+        } else {
+            if (panelTableroOponente.getTableroOponente("principal").getCasillasOcupadas().get(panelTableroOponente.getTableroOponente("principal").getMatriz()[row][col]) == Integer.valueOf(2)) {
+                // Volver a intentar si la casilla ya fue atacada anteriormente
                 oponenteVsUsuario();
-            }else{
+            } else {
+                // Actualizar casillas y estado si la casilla contiene agua
                 panelTableroOponente.getTableroOponente("principal").getCasillasOcupadas().put(panelTableroOponente.getTableroOponente("principal").getMatriz()[row][col], Integer.valueOf(2));
                 guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col].setIcon(new ImageIcon(getClass().getResource("/recursos/agua.png")));
                 panelTableroOponente.getTableroOponente("principal").getMatriz()[row][col].setIcon(new ImageIcon(getClass().getResource("/recursos/agua.png")));
@@ -119,136 +129,75 @@ public class GUI_Secundaria extends JFrame {
     }
 
     /**
-     * Identifica si hay un barco en la casilla del tablero principal para hundirlo
-     * @param row
-     * @param col
-     * @param barco
+     * Este método realiza las acciones de combate cuando se ha tocado un barco
      */
-    public void funcionesCombate(int row, int col, String barco){
-        // Establece una imagen a la casilla seleccionada del tablero posición del usuario si un barco fue tocado
+    public void funcionesCombate(int row, int col, String barco) {
         guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col].setIcon(new ImageIcon(getClass().getResource("/recursos/tocado.png")));
         panelTableroOponente.getTableroOponente("principal").getCasillasOcupadas().replace(panelTableroOponente.getTableroOponente("principal").getMatriz()[row][col], Integer.valueOf(2));
 
-        // Reduce las casillas ocupadas del barco tocado para poder ser hundido
         guiPrincipal.getPanelTablero().getTablero("posicion").reducirCasillasUsadas(barco);
 
-        // Si no hay más casillas ocupadas, el barco se hunde y se establecen las imágenes respectivas
-        if(guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]) == Integer.valueOf(0)){
+        if (guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[row][col]) == Integer.valueOf(0)) {
             contadorHundidos++;
             estado = 1;
             for (int fil = 1; fil < 11; fil++) {
                 for (int colu = 1; colu < 11; colu++) {
-                    if(guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[fil][colu]) != null){
-                        if(guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[fil][colu]).equals(barco)){
-                            guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[fil][colu].setIcon(new ImageIcon(getClass().getResource("/recursos/hundido.png")));
-                        }
-                    }else{
-                        continue;
+                    String nombreBarco = (String) guiPrincipal.getPanelTablero().getTablero("posicion").getCasillaNombreBarco().get(guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[fil][colu]);
+                    if (nombreBarco != null && nombreBarco.equals(barco)) {
+                        guiPrincipal.getPanelTablero().getTablero("posicion").getMatriz()[fil][colu].setIcon(new ImageIcon(getClass().getResource("/recursos/hundido.png")));
                     }
                 }
             }
-        }else{
+        } else {
             estado = 1;
         }
 
-        if(contadorHundidos == 10){
+        if (contadorHundidos == 10) {
             estado = 2;
         }
     }
 
     /**
-     * Distribuye de forma aleatoria la flota en el tablero posición del oponente
+     * Este método realiza la distribución aleatoria de la flota en el tablero del oponente
      */
-    public void distribucionFlotaOponente(){
-        Random barcoAleatorio = new Random();
-        String nombreBarco = "";
-        int numBarcoAleatorio = barcoAleatorio.nextInt(4)+1;
+    public void distribucionFlotaOponente() {
+        Random random = new Random();
+        String[] nombresBarcos = { "portavion", "submarino", "destructor", "fragata" };
+        int numBarcoAleatorio = random.nextInt(4) + 1;
+        String nombreBarco = nombresBarcos[numBarcoAleatorio - 1];
 
-        switch (numBarcoAleatorio){
-            case 1: nombreBarco = "portavion";
-                break;
-            case 2: nombreBarco = "submarino";
-                break;
-            case 3: nombreBarco = "destructor";
-                break;
-            case 4: nombreBarco = "fragata";
-                break;
-        }
+        int numOrientacionAleatoria = random.nextInt(2);
+        int numSentidoAleatorio = numOrientacionAleatoria == 0 ? random.nextInt(2) + 1 : random.nextInt(2) + 3;
+        int numColumnaAleatoria = random.nextInt(10) + 1;
+        int numFilaAleatoria = random.nextInt(10) + 1;
 
-        Random orientacionAleatoria = new Random();
-        int numOrientacionAleatoria = orientacionAleatoria.nextInt(2);
-
-        Random sentidoAleatorio = new Random();
-        int numSentidoAleatorio = 0;
-        switch (numOrientacionAleatoria){
-            case 0:
-                numSentidoAleatorio = sentidoAleatorio.nextInt(2)+1;
-                break;
-            case 1:
-                numSentidoAleatorio = sentidoAleatorio.nextInt(4-3)+3;
-                break;
-        }
-
-        Random columnaAleatoria = new Random();
-        int numColumnaAleatoria = columnaAleatoria.nextInt(10)+1;
-
-        Random filaAleatoria = new Random();
-        int numFilaAleatoria = filaAleatoria.nextInt(10)+1;
-
-        if(numBarcoAleatorio == 1 &&  pintarFlotaOponente.getCantidadBarco("portavion") > 0){
-            if(!pintarFlotaOponente.funcionesFlota(nombreBarco, numOrientacionAleatoria, numSentidoAleatorio, numColumnaAleatoria, numFilaAleatoria)){
+        if (pintarFlotaOponente.getCantidadBarco(nombreBarco) > 0) {
+            if (!pintarFlotaOponente.funcionesFlota(nombreBarco, numOrientacionAleatoria, numSentidoAleatorio, numColumnaAleatoria, numFilaAleatoria)) {
                 distribucionFlotaOponente();
-            }else{
-                pintarFlotaOponente.setCantidadBarco("portavion");
-            }
-        }else{
-            if(numBarcoAleatorio == 2 &&  pintarFlotaOponente.getCantidadBarco("submarino") > 0){
-                if(!pintarFlotaOponente.funcionesFlota(nombreBarco,numOrientacionAleatoria, numSentidoAleatorio, numColumnaAleatoria, numFilaAleatoria)){
-                    distribucionFlotaOponente();
-                }else{
-                    pintarFlotaOponente.setCantidadBarco("submarino");
-                }
-            }else{
-                if(numBarcoAleatorio == 3 &&  pintarFlotaOponente.getCantidadBarco("destructor") > 0){
-                    if(!pintarFlotaOponente.funcionesFlota(nombreBarco,numOrientacionAleatoria, numSentidoAleatorio, numColumnaAleatoria, numFilaAleatoria)){
-                        distribucionFlotaOponente();
-                    }else{
-                        pintarFlotaOponente.setCantidadBarco("destructor");
-                    }
-                }else{
-                    if(numBarcoAleatorio == 4 &&  pintarFlotaOponente.getCantidadBarco("fragata") > 0){
-                        if(!pintarFlotaOponente.funcionesFlota(nombreBarco,numOrientacionAleatoria, numSentidoAleatorio, numColumnaAleatoria, numFilaAleatoria)){
-                            distribucionFlotaOponente();
-                        }else{
-                            pintarFlotaOponente.setCantidadBarco("fragata");
-                        }
-                    }
-                }
+            } else {
+                pintarFlotaOponente.setCantidadBarco(nombreBarco);
             }
         }
     }
 
     /**
-     * Retorna el panelTableroOponente
-     * @return PanelTableroOponente
+     * Este método retorna el panelTableroOponente
      */
-    public PanelTableroOponente getPanelTableroOponente(){
+    public PanelTableroOponente getPanelTableroOponente() {
         return panelTableroOponente;
     }
 
     /**
-     * Retorna el objeto para pintar la flota oponente
-     * @return PintarFlotaOponente
+     * Este método retorna el panelTableroOponente
      */
-    public PintarFlotaOponente getPintarFlotaOponente(){
+    public PintarFlotaOponente getPintarFlotaOponente() {
         return pintarFlotaOponente;
     }
 
     /**
-     * Retorna la variable estado
-     * @return int
+     * Este método retorna la variable estado
      */
-    public int getEstado(){
+    public int getEstado() {
         return estado;
     }
 }
