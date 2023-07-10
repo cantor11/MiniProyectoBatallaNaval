@@ -259,19 +259,20 @@ public class GUI extends JFrame {
                 }
             }else if (e.getButton() == MouseEvent.BUTTON1)
             {
-                if (barcoVinculadoCount <= barcosList.length){
+                if (barcoVinculadoCount < barcosList.length){
                     for (int row = 1; row < 11; row++) {
                         for (int col = 1; col < 11; col++) {
                             if(e.getSource() == panelTablero.getTablero("posicion").getMatriz()[row][col]) {
                                 pintarFlota.posicionarBarco(barcosList[barcoVinculadoCount], col, row, orientacion);
                                 barcoVinculadoCount++;
-                                if (barcoVinculadoCount > barcosList.length)
-                                {
+                                if (barcoVinculadoCount >= barcosList.length){
                                     comienzaLaGuerra();
                                 }
                             }
                         }
                     }
+                }else{
+
                 }
             }
         }
@@ -283,12 +284,14 @@ public class GUI extends JFrame {
 
         @Override
         public void mouseEntered(MouseEvent e) {
-            for (int row = 1; row < 11; row++) {
-                for (int col = 1; col < 11; col++) {
-                    pintarFlota.removerIcon(col, row);
-                    if(e.getSource() == panelTablero.getTablero("posicion").getMatriz()[row][col]) {
-                        if(pintarFlota.funcionesFlota(barcosList[barcoVinculadoCount], orientacion, sentidoOrientacion, col, row)) {
-                            break;
+            if (barcoVinculadoCount < barcosList.length) {
+                for (int row = 1; row < 11; row++) {
+                    for (int col = 1; col < 11; col++) {
+                        pintarFlota.removerIcon(col, row);
+                        if (e.getSource() == panelTablero.getTablero("posicion").getMatriz()[row][col]) {
+                            if (pintarFlota.funcionesFlota(barcosList[barcoVinculadoCount], orientacion, sentidoOrientacion, col, row)) {
+                                break;
+                            }
                         }
                     }
                 }
