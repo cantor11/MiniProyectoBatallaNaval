@@ -21,7 +21,7 @@ public class PanelTableroOponente extends JPanel {
     public PanelTableroOponente(){
         GridBagLayout gb = new GridBagLayout();
         this.setLayout(gb);
-        this.setBackground(Color.CYAN);
+        this.setBackground(Color.BLACK);
         tableroPosicionOponente = new Tableros();
         tableroPrincipalOponente = new Tableros();
         abecedario = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
@@ -36,8 +36,8 @@ public class PanelTableroOponente extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
 
         // Panel tablero posición
-        nombreTableroPosicion = new JLabel("T A B L E R O   P O S I C I O N");
-        nombreTableroPosicion.setForeground(new Color(0, 0, 0, 230));
+        nombreTableroPosicion = new JLabel("POSICIONES DEL OPONENTE");
+        nombreTableroPosicion.setForeground(Color.white);
         nombreTableroPosicion.setFont(new Font(Font.MONOSPACED,Font.BOLD,15));
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -58,19 +58,16 @@ public class PanelTableroOponente extends JPanel {
      * JPanel con imagen para agregar las matrices
      */
     public class BackgroundPane extends JPanel{
-        private Image img;
 
         public BackgroundPane(){
-            img = new ImageIcon(getClass().getResource("/recursos/mar.jpg")).getImage();
             this.setLayout(new GridLayout(11, 11));
             this.setPreferredSize(new Dimension(400, 400));
-            this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+            this.setBorder(BorderFactory.createLineBorder(Color.BLUE));
         }
 
         @Override
         protected void paintComponent(Graphics g){
             super.paintComponent(g);
-            g.drawImage(img, 0, 0, this);
             revalidate();
             repaint();
         }

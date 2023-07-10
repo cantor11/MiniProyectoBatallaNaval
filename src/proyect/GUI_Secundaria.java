@@ -12,8 +12,6 @@ import java.util.Random;
  */
 public class GUI_Secundaria extends JFrame {
     public static final String PATH = "/recursos/";
-    private Header titulo;
-    private ImageIcon enemyIcon;
     private PanelTableroOponente panelTableroOponente;
     private PintarFlotaOponente pintarFlotaOponente;
     private GUI guiPrincipal;
@@ -48,34 +46,28 @@ public class GUI_Secundaria extends JFrame {
         getContentPane().setLayout(new BorderLayout(0,0));
 
         JPanel panelPrincipal = new JPanel();
-        panelPrincipal.setBackground(Color.CYAN);
+        panelPrincipal.setBackground(Color.gray);
         getContentPane().add(panelPrincipal,BorderLayout.CENTER);
         panelPrincipal.setLayout(new BorderLayout(0,0));
 
         JPanel panelSup = new JPanel();
-        panelSup.setBackground(Color.CYAN);
+        panelSup.setBackground(Color.gray);
         panelPrincipal.add(panelSup,BorderLayout.NORTH);
         panelSup.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
 
         JPanel panelInferior = new JPanel();
-        panelInferior.setBackground(Color.CYAN);
+        panelInferior.setBackground(Color.gray);
         panelPrincipal.add(panelInferior,BorderLayout.SOUTH);
         panelInferior.setLayout(new FlowLayout(FlowLayout.CENTER,200,0));
 
         JPanel panelCentral = new JPanel();
-        panelCentral.setBackground(Color.cyan);
+        panelCentral.setBackground(Color.gray);
         panelPrincipal.add(panelCentral,BorderLayout.CENTER);
         panelCentral.setLayout(new GridBagLayout());
         panelTableroOponente = new PanelTableroOponente();
         pintarFlotaOponente = new PintarFlotaOponente(panelTableroOponente);
         panelCentral.add(panelTableroOponente);
 
-        // Set up JComponents
-        // Titulo
-        titulo = new Header("MOVIMIENTOS ENEMIGO", Color.CYAN);
-        panelSup.add(titulo,FlowLayout.LEFT);
-
-        // Icono
     }
 
     /**
