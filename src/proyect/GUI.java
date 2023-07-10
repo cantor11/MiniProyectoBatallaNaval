@@ -36,15 +36,19 @@ public class GUI extends JFrame {
     private Escucha escucha;
     private ImageIcon team, help, enemy, play, infoSentidos, reinicio;
     private JPanel panelNorte, panelSur, panelEste, panelCentro;
-     private PanelTablero panelTablero;
-     private PintarFlota pintarFlota;
-     private PanelFlota panelFlota;
-     private GUI_Secundaria ventanaOponente;
+    private PanelTablero panelTablero;
+    private PintarFlota pintarFlota;
+    private PanelFlota panelFlota;
+    private GUI_Secundaria ventanaOponente;
     private int estadoJuego; // 1 seleccionar barco, 2 seleccionar orientacion del barco, 3 seleccionar sentido del barco, 4 colocar barco en el tablero, 5 combate, 6 turno del oponente
     private Combate combate;
     private int contadorHundidos; // Contador de barcos hundidos
     private Timer timer; // establece el tiempo que tarde el oponente en escoger casilla
     private Image image;
+    private ComenzarPartidaListener comenzarPartidaListener;
+    private EscuchaPosiciones escuchaPosiciones;
+    private int orientacion = 1;
+    private int sentidoOrientacion = 3;
 
     /**
      * Constructor of GUI class
@@ -72,6 +76,9 @@ public class GUI extends JFrame {
     private void initGUI() {
         // Creación de la ventana del oponente
         ventanaOponente = new GUI_Secundaria(this);
+
+        comenzarPartidaListener = new ComenzarPartidaListener();
+        escuchaPosiciones = new EscuchaPosiciones();
 
         // Icono del JFrame
         image = new ImageIcon(getClass().getResource(PATH+"barcoIcono.png")).getImage();
@@ -147,10 +154,10 @@ public class GUI extends JFrame {
         comenzarPartida = new JButton("Comenzar partida");
         comenzarPartida.setFont(new Font("MONOSPACED", Font.BOLD,25));
         comenzarPartida.setForeground(Color.red);
-        comenzarPartida.addActionListener(escucha);
         comenzarPartida.setBackground(Color.PINK);
         comenzarPartida.setFocusable(false);
         comenzarPartida.setBorder(null);
+        comenzarPartida.addActionListener(comenzarPartidaListener);
         panelSur.add(comenzarPartida,FlowLayout.LEFT);
 
         // Creación de botón de movimientos del oponente
@@ -183,6 +190,7 @@ public class GUI extends JFrame {
         combate = new Combate(panelTablero, ventanaOponente.getPanelTableroOponente());
 
         contadorHundidos = 0;
+        pintarFlota = new PintarFlota(panelTablero, panelFlota);
         // Timer para el turno del oponente
         timer = new Timer(2000, escucha);
     }
@@ -213,6 +221,79 @@ public class GUI extends JFrame {
 
 
 
+    private class ComenzarPartidaListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            headerProject.setText("¡Posiciona tus naves¡ ");
+            for (int row = 0; row < panelTablero.getTablero("posicion").getMatriz().length; row++) {
+                for (int col = 0; col < panelTablero.getTablero("posicion").getMatriz()[row].length; col++) {
+                    panelTablero.getTablero("posicion").getMatriz()[row][col].addMouseListener(escuchaPosiciones);
+                }
+            }
+            comenzarPartida.setEnabled(false);
+        }
+
+
+    }
+
+    private class EscuchaPosiciones implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (e.getButton() == MouseEvent.BUTTON3) {
+                if (orientacion == 1) {
+                    orientacion = 0;
+                    sentidoOrientacion = 2;
+                }else{
+                    orientacion = 1;
+                    sentidoOrientacion = 3;
+                }
+            }else if (e.getButton() == MouseEvent.BUTTON1)
+            {
+                for (int row = 1; row < 11; row++) {
+                    for (int col = 1; col < 11; col++) {
+                        if(e.getSource() == panelTablero.getTablero("posicion").getMatriz()[row][col]) {
+                            pintarFlota.posicionarBarco("portavion", col, row, orientacion);
+                        }
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            for (int row = 1; row < 11; row++) {
+                for (int col = 1; col < 11; col++) {
+                    pintarFlota.removerIcon(col, row);
+                    if(e.getSource() == panelTablero.getTablero("posicion").getMatriz()[row][col]) {
+                        if(pintarFlota.funcionesFlota("portavion", orientacion, sentidoOrientacion, col, row)) {
+                            break;
+                        }
+                    }
+                }
+            }
+            repaint();
+            revalidate();
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+
+    }
+
 
 
     /**
@@ -234,6 +315,8 @@ public class GUI extends JFrame {
             }
         }
     }
+
+
 
     /**
      * Agrega o remueve él escucha a cada uno de los JLabel de la matriz principal de PintarTablero

@@ -106,30 +106,25 @@ public class PintarFlota {
 
         if(barco == "portavion"){
             casillasAUsar = 4;
+        }else if(barco == "submarino"){
+            casillasAUsar = 3;
+        }else if(barco == "destructor"){
+            casillasAUsar = 2;
         }else{
-            if(barco == "submarino"){
-                casillasAUsar = 3;
-            }else{
-                if(barco == "destructor"){
-                    casillasAUsar = 2;
-                }else{
-                    casillasAUsar = 1;
-                }
-            }
+            casillasAUsar = 1;
         }
 
-        if(estadoOrientacion == 1){
+
+        if(estadoOrientacion == 1) {
             if(estadoSentidoOrientacion == 3){
                 columnaReferencia = 10;
-            }else{
-                if(estadoSentidoOrientacion == 4){
-                    columnaReferencia = 1;
-                }
+            }else if(estadoSentidoOrientacion == 4){
+                columnaReferencia = 1;
             }
 
             int ultimasCasillas = Math.abs(col - columnaReferencia);
             if(ultimasCasillas < casillasAUsar-1){
-                panelFlota.getInformacionJuego().setText("No hay espacio para colocar el " + barco);
+                // NO hay donde colocar el barco
             }else{
                 if(estadoSentidoOrientacion == 3){
                     nextImage = 1;
@@ -142,15 +137,12 @@ public class PintarFlota {
                     if(casillasUsadas == 0){
                         for(int pic=col; pic < col+casillasAUsar; pic++){
                             panelTablero.getTablero("posicion").getMatriz()[row][pic].setIcon(new ImageIcon(getClass().getResource(pathImages(barco, estadoOrientacion, estadoSentidoOrientacion) + String.valueOf(nextImage) + ".png")));
-                            panelTablero.getTablero("posicion").getCasillasOcupadas().put(panelTablero.getTablero("posicion").getMatriz()[row][pic], 1);
-                            panelTablero.getTablero("posicion").getCasillaNombreBarco().put(panelTablero.getTablero("posicion").getMatriz()[row][pic], barco + String.valueOf(barcoUsado));
-                            relacionJLabelBarco(panelTablero.getTablero("posicion").getMatriz()[row][pic], barco + String.valueOf(barcoUsado), barcoUsado);
                             nextImage++;
                             auxiliar = true;
                         }
                         barcoUsado++;
                     }else{
-                        panelFlota.getInformacionJuego().setText("No hay espacio para colocar el " + barco);
+                        // no hay donde colocar el barco
                     }
                 }else{
                     nextImage = casillasAUsar;
@@ -163,30 +155,25 @@ public class PintarFlota {
                     if(casillasUsadas == 0){
                         for(int pic=col; pic > col-casillasAUsar; pic--){
                             panelTablero.getTablero("posicion").getMatriz()[row][pic].setIcon(new ImageIcon(getClass().getResource(pathImages(barco, estadoOrientacion, estadoSentidoOrientacion) + String.valueOf(nextImage) + ".png")));
-                            panelTablero.getTablero("posicion").getCasillasOcupadas().put(panelTablero.getTablero("posicion").getMatriz()[row][pic], 1);
-                            panelTablero.getTablero("posicion").getCasillaNombreBarco().put(panelTablero.getTablero("posicion").getMatriz()[row][pic], barco + String.valueOf(barcoUsado));
-                            relacionJLabelBarco(panelTablero.getTablero("posicion").getMatriz()[row][pic], barco + String.valueOf(barcoUsado), barcoUsado);
                             nextImage--;
                             auxiliar = true;
                         }
                         barcoUsado++;
                     }else{
-                        panelFlota.getInformacionJuego().setText("No hay espacio para colocar el " + barco);
+                        // no hay donde colocar el barco
                     }
                 }
             }
         }else{
             if(estadoSentidoOrientacion == 1){
                 filaReferencia = 10;
-            }else{
-                if(estadoSentidoOrientacion == 2){
-                    filaReferencia = 1;
-                }
+            }else if(estadoSentidoOrientacion == 2){
+                filaReferencia = 1;
             }
 
             int ultimasCasillas = Math.abs(row - filaReferencia);
             if(ultimasCasillas < casillasAUsar-1){
-                panelFlota.getInformacionJuego().setText("No hay espacio para colocar el " + barco);
+                // no hay donde colocar el barco
             }else{
                 if(estadoSentidoOrientacion == 1){
                     nextImage = 1;
@@ -199,15 +186,12 @@ public class PintarFlota {
                     if(casillasUsadas == 0){
                         for(int pic=row; pic < row+casillasAUsar; pic++){
                             panelTablero.getTablero("posicion").getMatriz()[pic][col].setIcon(new ImageIcon(getClass().getResource(pathImages(barco, estadoOrientacion, estadoSentidoOrientacion) + String.valueOf(nextImage) + ".png")));
-                            panelTablero.getTablero("posicion").getCasillasOcupadas().put(panelTablero.getTablero("posicion").getMatriz()[pic][col], 1);
-                            panelTablero.getTablero("posicion").getCasillaNombreBarco().put(panelTablero.getTablero("posicion").getMatriz()[pic][col], barco + String.valueOf(barcoUsado));
-                            relacionJLabelBarco(panelTablero.getTablero("posicion").getMatriz()[pic][col], barco + String.valueOf(barcoUsado), barcoUsado);
                             nextImage++;
                             auxiliar = true;
                         }
                         barcoUsado++;
                     }else{
-                        panelFlota.getInformacionJuego().setText("No hay espacio para colocar el " + barco);
+                        // no hay donde colocar el barco
                     }
                 }else{
                     nextImage = casillasAUsar;
@@ -220,19 +204,54 @@ public class PintarFlota {
                     if(casillasUsadas == 0){
                         for(int pic=row; pic > row-casillasAUsar; pic--){
                             panelTablero.getTablero("posicion").getMatriz()[pic][col].setIcon(new ImageIcon(getClass().getResource(pathImages(barco, estadoOrientacion, estadoSentidoOrientacion) + String.valueOf(nextImage) + ".png")));
-                            panelTablero.getTablero("posicion").getCasillasOcupadas().put(panelTablero.getTablero("posicion").getMatriz()[pic][col], 1);
-                            panelTablero.getTablero("posicion").getCasillaNombreBarco().put(panelTablero.getTablero("posicion").getMatriz()[pic][col], barco + String.valueOf(barcoUsado));
-                            relacionJLabelBarco(panelTablero.getTablero("posicion").getMatriz()[pic][col], barco + String.valueOf(barcoUsado), barcoUsado);
                             nextImage--;
                             auxiliar = true;
                         }
                         barcoUsado++;
                     }else{
-                        panelFlota.getInformacionJuego().setText("No hay espacio para colocar el " + barco);
+                        // no hay donde colocar el barco
                     }
                 }
             }
         }
         return auxiliar;
     }
+
+    public void removerIcon(int col, int row){
+        if(panelTablero.getTablero("posicion").getCasillasOcupadas().get(panelTablero.getTablero("posicion").getMatriz()[row][col]) != Integer.valueOf(1)) {
+            panelTablero.getTablero("posicion").getMatriz()[row][col].setIcon(null);
+        }
+    }
+
+    public void posicionarBarco(String barco , int col, int row, int orientacion){
+        int casillasAUsar = 0;
+        if(barco == "portavion"){
+            casillasAUsar = 4;
+        }else if(barco == "submarino"){
+            casillasAUsar = 3;
+        }else if(barco == "destructor"){
+            casillasAUsar = 2;
+        }else{
+            casillasAUsar = 1;
+        }
+        if (orientacion == 1)
+        {
+            for(int casilla=col; casilla < col+casillasAUsar; casilla++){
+                if(panelTablero.getTablero("posicion").getCasillasOcupadas().get(panelTablero.getTablero("posicion").getMatriz()[row][casilla]) != Integer.valueOf(1)) {
+                    panelTablero.getTablero("posicion").getCasillasOcupadas().put(panelTablero.getTablero("posicion").getMatriz()[row][casilla], 1);
+                    panelTablero.getTablero("posicion").getCasillaNombreBarco().put(panelTablero.getTablero("posicion").getMatriz()[row][casilla], barco + String.valueOf(barcoUsado));
+                }
+            }
+        }else{
+            for(int casilla=row; casilla > row-casillasAUsar; casilla--){
+                if(panelTablero.getTablero("posicion").getCasillasOcupadas().get(panelTablero.getTablero("posicion").getMatriz()[casilla][col]) != Integer.valueOf(1)) {
+                    panelTablero.getTablero("posicion").getCasillasOcupadas().put(panelTablero.getTablero("posicion").getMatriz()[casilla][col], 1);
+                    panelTablero.getTablero("posicion").getCasillaNombreBarco().put(panelTablero.getTablero("posicion").getMatriz()[casilla][col], barco + String.valueOf(barcoUsado));
+                }
+            }
+        }
+
+
+    }
+
 }
