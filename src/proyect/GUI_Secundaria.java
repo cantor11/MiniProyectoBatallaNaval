@@ -76,9 +76,6 @@ public class GUI_Secundaria extends JFrame {
         panelSup.add(titulo,FlowLayout.LEFT);
 
         // Icono
-        enemyIcon = new ImageIcon(getClass().getResource(PATH+"enemy.png"));
-        JLabel enemy = new JLabel(enemyIcon);
-        panelSup.add(enemy,FlowLayout.CENTER);
     }
 
     /**

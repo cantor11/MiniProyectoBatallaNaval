@@ -23,7 +23,7 @@ public class PanelTablero extends JPanel {
     public PanelTablero(){
         GridBagLayout gb = new GridBagLayout();
         this.setLayout(gb);
-        this.setBackground(Color.BLUE);
+        this.setBackground(Color.black);
         tableroPosicion = new Tableros();
         tableroPrincipal = new Tableros();
         abecedario = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
@@ -73,33 +73,24 @@ public class PanelTablero extends JPanel {
         gbc.insets = new Insets(0,15,0,15);
         this.add(panelTableroPrincipal, gbc);
 
-        // Imagen tiros
-        imagenTiros = new JLabel();
-        imagenTiros.setIcon(new ImageIcon(getClass().getResource(PATH + "tiros.png")));
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        this.add(imagenTiros, gbc);
     }
 
     /**
      * JPanel con imagen para agregar las matrices
      */
+
     public class BackgroundPane extends JPanel{
-        private Image img;
 
         public BackgroundPane(){
-            img = new ImageIcon(getClass().getResource("/recursos/mar.jpg")).getImage();
             this.setLayout(new GridLayout(11, 11));
             this.setPreferredSize(new Dimension(400, 400));
-            this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+            this.setBorder(BorderFactory.createLineBorder(Color.blue));
         }
 
         @Override
         protected void paintComponent(Graphics g){
             super.paintComponent(g);
-            g.drawImage(img, 0, 0, this);
+            //g.drawImage(img, 0, 0, this);
             revalidate();
             repaint();
         }

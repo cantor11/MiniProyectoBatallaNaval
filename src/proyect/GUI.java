@@ -83,15 +83,15 @@ public class GUI extends JFrame {
         panelCentro = new JPanel();
 
         // Creación de paneles para el JFrame
-        panelNorte.setBackground(Color.BLUE);
-        panelSur.setBackground(Color.BLUE);
-        panelEste.setBackground(Color.BLUE);
+        panelNorte.setBackground(Color.DARK_GRAY);
+        panelSur.setBackground(Color.DARK_GRAY);
+        panelEste.setBackground(Color.GRAY);
 
         panelSur.setLayout(new FlowLayout(FlowLayout.CENTER,200,5));
         panelNorte.setLayout(new FlowLayout(FlowLayout.CENTER,200,5));
         panelEste.setLayout(new FlowLayout(FlowLayout.CENTER,100,60));
 
-        panelSur.setPreferredSize(new Dimension(100,60));
+        panelSur.setPreferredSize(new Dimension(100,90));
         panelNorte.setPreferredSize(new Dimension(100,60));
         panelEste.setPreferredSize(new Dimension( 1500,20));
 
@@ -108,30 +108,30 @@ public class GUI extends JFrame {
 
         // Set up JComponents
         // Imágenes
-        team = new ImageIcon(getClass().getResource(PATH + "team.png"));
-        help = new  ImageIcon(getClass().getResource(PATH+"signo.png"));
-        play = new ImageIcon(getClass().getResource(PATH+"play.png"));
-        enemy = new ImageIcon(getClass().getResource(PATH+"enemy.png"));
         infoSentidos = new ImageIcon(getClass().getResource(PATH + "info.png"));
-        reinicio = new ImageIcon(getClass().getResource(PATH + "reiniciarIcon.png"));
 
         // JComponents de la parte superior
         // Título
-        headerProject = new Header("B A T A L L A   N A V A L", Color.blue);
+        headerProject = new Header("BATALLA NAVAL", Color.DARK_GRAY);
+        headerProject.setFont(new Font("MONOSPACED", Font.BOLD,40));
         panelNorte.add(headerProject,FlowLayout.LEFT);
 
         // Creación botón ayuda
-        ayuda = new JButton("", help);
+        ayuda = new JButton("Ayuda");
+        ayuda.setFont(new Font("MONOSPACED", 4,20));
+        ayuda.setForeground(Color.red);
         ayuda.addActionListener(escucha);
-        ayuda.setBackground(Color.BLUE);
+        ayuda.setBackground(Color.PINK);
         ayuda.setFocusable(false);
         ayuda.setBorder(null);
         panelNorte.add(ayuda,FlowLayout.CENTER);
 
         // Creación botón créditos
-        creditos = new JButton("", team);
+        creditos = new JButton("Integrantes");
+        creditos.setFont(new Font("MONOSPACED",4, 20));
+        creditos.setForeground(Color.red);
         creditos.addActionListener(escucha);
-        creditos.setBackground(Color.BLUE);
+        creditos.setBackground(Color.PINK);
         creditos.setFocusable(false);
         creditos.setBorder(null);
         panelNorte.add(creditos,FlowLayout.LEFT);
@@ -144,25 +144,31 @@ public class GUI extends JFrame {
 
         //JComponents de la parte Inferior
         // Creación de botón comenzar partida
-        comenzarPartida = new JButton("Comenzar partida", play);
+        comenzarPartida = new JButton("Comenzar partida");
+        comenzarPartida.setFont(new Font("MONOSPACED", Font.BOLD,25));
+        comenzarPartida.setForeground(Color.red);
         comenzarPartida.addActionListener(escucha);
-        comenzarPartida.setBackground(Color.BLUE);
+        comenzarPartida.setBackground(Color.PINK);
         comenzarPartida.setFocusable(false);
         comenzarPartida.setBorder(null);
         panelSur.add(comenzarPartida,FlowLayout.LEFT);
 
         // Creación de botón de movimientos del oponente
-        movimientosEnemigo = new JButton("Movimientos oponente", enemy);
+        movimientosEnemigo = new JButton("Movimientos oponente");
+        movimientosEnemigo.setFont(new Font("MONOSPACED", Font.BOLD,25));
+        movimientosEnemigo.setForeground(Color.red);
         movimientosEnemigo.addActionListener(escucha);
-        movimientosEnemigo.setBackground(Color.BLUE);
+        movimientosEnemigo.setBackground(Color.PINK);
         movimientosEnemigo.setFocusable(false);
         movimientosEnemigo.setBorder(null);
         panelSur.add(movimientosEnemigo,FlowLayout.CENTER);
 
         // Creación del botón de reinicio
-        reiniciar = new JButton("Reiniciar", reinicio);
+        reiniciar = new JButton("Reiniciar");
+        reiniciar.setFont(new Font("MONOSPACED", Font.BOLD,25));
+        reiniciar.setForeground(Color.red);
         reiniciar.addActionListener(escucha);
-        reiniciar.setBackground(Color.BLUE);
+        reiniciar.setBackground(Color.PINK);
         reiniciar.setFocusable(false);
         reiniciar.setBorder(null);
         panelSur.add(reiniciar,FlowLayout.CENTER);
